@@ -2,15 +2,17 @@ package by.epam.third.writer;
 
 import by.epam.third.composite.CompositeImpl;
 import by.epam.third.composite.LeafImpl;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.TextAlign;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import static org.apache.poi.xssf.usermodel.TextAlign.CENTER;
 
 public class ExcelWriter {
 
@@ -18,10 +20,13 @@ public class ExcelWriter {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("ExcelRecover");
         Row row;
+        XSSFCellStyle style = (XSSFCellStyle) book.createCellStyle();
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
         for (int i = 0; i < 100; i++) {
             row = sheet.createRow(i);
             for (int j = 0; j < 100; j++) {
-                row.createCell(j);
+                row.createCell(j).setCellStyle(style);
             }
         }
         writeLogic(sheet, composite, rowIndex, columnIndex);
@@ -61,6 +66,9 @@ public class ExcelWriter {
         }
     }
 
+    public void setCenter(XSSFSheet sheet){
+
+    }
 
     private int hatHeight(CompositeImpl composite) {
         int counter = 0;
