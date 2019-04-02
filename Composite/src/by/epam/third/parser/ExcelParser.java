@@ -48,7 +48,7 @@ public class ExcelParser {
         parse(sheet, parent, rowIndex, lastColumn + 1, maxWeight);
     }
 
-    public void parseLeaf(XSSFSheet sheet, CompositeImpl composite, int columnInd, int rowInd) throws BasicException {
+    private void parseLeaf(XSSFSheet sheet, CompositeImpl composite, int columnInd, int rowInd) throws BasicException {
         for (int i = rowInd; i <= sheet.getLastRowNum(); i++) {
             Row row = sheet.getRow(i);
             Cell cell = row.getCell(columnInd);

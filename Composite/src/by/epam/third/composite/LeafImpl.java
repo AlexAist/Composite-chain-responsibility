@@ -1,9 +1,10 @@
 package by.epam.third.composite;
 
+import by.epam.third.exception.OperationException;
+
 public class LeafImpl implements Component {
 
     private String color;
-    //private String unitType;
     private double info;
     private boolean isExist;
 
@@ -27,14 +28,6 @@ public class LeafImpl implements Component {
         this.color = color;
     }
 
-/*    public String getUnitType() {
-        return unitType;
-    }
-
-    public void setUnitType(String unitType) {
-        this.unitType = unitType;
-    }*/
-
     public double getInfo() {
         return info;
     }
@@ -52,23 +45,23 @@ public class LeafImpl implements Component {
     }
 
     @Override
-    public void operation() {
-
+    public void operation() throws OperationException {
+            throw new OperationException("Operation is not valid for leaf");
     }
 
     @Override
-    public void add(Component c) {
-        throw new UnsupportedOperationException("Add is not valid for leaf");
+    public void add(Component c) throws OperationException {
+            throw new OperationException("Add is not valid for leaf");
     }
 
     @Override
-    public void remove(Component c) {
-        throw new UnsupportedOperationException("remove is not valid for leaf");
+    public void remove(Component c) throws OperationException {
+            throw new OperationException("remove is not valid for leaf");
     }
 
     @Override
-    public Component getChild(int index) {
-        throw new UnsupportedOperationException("getChild is not valid for leaf");
+    public Component getChild(int index) throws OperationException {
+        throw new OperationException("getChild is not valid for leaf");
     }
 
     @Override

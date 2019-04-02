@@ -1,5 +1,6 @@
 package by.epam.third.composite;
 
+import by.epam.third.exception.OperationException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +13,6 @@ public class CompositeImpl implements Component {
     private ArrayList<Component> components = new ArrayList<>();
     private String info;
     private int size = 0;
-    private final int ADD_UNIT = 15;
 
     public CompositeImpl() {
     }
@@ -22,26 +22,19 @@ public class CompositeImpl implements Component {
     }
 
     @Override
-    public void operation() {
+    public void operation() throws OperationException {
+        final int ADD_UNIT = 15;
         for (int i = 0; i < components.size(); i++) {
             if (components.get(i) instanceof CompositeImpl) {
                 components.get(i).operation();
             } else {
-                for (int j = 0; j < components.size(); j++) {
-                    LeafImpl leaf = (LeafImpl) components.get(j);
+                for (Component component : components) {
+                    LeafImpl leaf = (LeafImpl) component;
                     leaf.setInfo(leaf.getInfo() + ADD_UNIT);
                 }
                 break;
             }
         }
-    }
-
-    public ArrayList<Component> getComponents() {
-        return components;
-    }
-
-    public void setComponents(ArrayList<Component> components) {
-        this.components = components;
     }
 
     public String getInfo() {

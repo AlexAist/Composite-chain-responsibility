@@ -2,21 +2,22 @@ package by.epam.third.writer;
 
 import by.epam.third.composite.CompositeImpl;
 import by.epam.third.composite.LeafImpl;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.TextAlign;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static org.apache.poi.xssf.usermodel.TextAlign.CENTER;
-
 public class ExcelWriter {
 
-    public void write(String file, CompositeImpl composite, int rowIndex, int columnIndex) throws IOException {
+    private static final Logger LOG = LogManager.getLogger();
+
+    public void write(String file, CompositeImpl composite, int rowIndex, int columnIndex) {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("ExcelRecover");
         Row row;
@@ -30,8 +31,12 @@ public class ExcelWriter {
             }
         }
         writeLogic(sheet, composite, rowIndex, columnIndex);
-        book.write(new FileOutputStream(file));
-        book.close();
+        try {
+            book.write(new FileOutputStream(file));
+            book.close();
+        } catch (IOException e) {
+            LOG.log(Level.ERROR, "File output stream error!");
+        }
     }
 
     private void writeLogic(Sheet sheet, CompositeImpl composite, int columnIndex, int rowIndex){
@@ -47,7 +52,8 @@ public class ExcelWriter {
                 Cell cell = row.getCell(columnIndex);
                 cell.setCellValue(((CompositeImpl) composite.getChild(i)).getInfo());
                 if(cellHeight != 0 || tempWeight != 0){
-                    CellRangeAddress address = new CellRangeAddress(rowIndex, rowIndex + cellHeight, columnIndex, columnIndex + tempWeight);
+                    CellRangeAddress address =
+                            new CellRangeAddress(rowIndex, rowIndex + cellHeight, columnIndex, columnIndex + tempWeight);
                     sheet.addMergedRegion(address);
                 }
                 writeLogic(sheet, (CompositeImpl) composite.getChild(i), columnIndex, rowIndex + cellHeight + 1);
@@ -64,10 +70,6 @@ public class ExcelWriter {
                 }
             }
         }
-    }
-
-    public void setCenter(XSSFSheet sheet){
-
     }
 
     private int hatHeight(CompositeImpl composite) {

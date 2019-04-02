@@ -15,7 +15,7 @@ public class ExcelReader {
 
     private static final Logger LOG = LogManager.getLogger();
 
-    public XSSFSheet readExcelSheet(int sheetName, String path) {
+    public XSSFSheet readExcelSheet(String path) {
         XSSFSheet sheet;
         try {
             if (!Validator.checkFile(path)) {

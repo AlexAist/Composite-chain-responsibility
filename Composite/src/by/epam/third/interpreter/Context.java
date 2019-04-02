@@ -1,6 +1,5 @@
 package by.epam.third.interpreter;
 
-import java.util.ArrayDeque;
 import java.util.Stack;
 
 public class Context{
